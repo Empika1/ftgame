@@ -576,6 +576,8 @@ void FTRender::addPiece(PieceType::Type type, Vector2 pos, Vector2 size, float r
 	case PieceType::GOAL:
 		addBuildArea(pos, size, rotation);
 		break;
+	default:
+		ERR_FAIL_MSG("trying to add invalid piece type");
 	}
 }
 
