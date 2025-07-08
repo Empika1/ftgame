@@ -2,7 +2,13 @@
 
 Import('env')
 
-env.Append(CPPPATH=[".", "render"])
+env.Append(CPPPATH=[".", "render", "sim_adapter"])
+
+env['godot'] = True
+SConscript('ftlib/src/SCsub')
+
+print(env.get("CPPPATH"))
 
 env.add_source_files(env.modules_sources, "*.cpp") # Add all cpp files to the build
 env.add_source_files(env.modules_sources, "render/*.cpp")
+env.add_source_files(env.modules_sources, "sim_adapter/*.cpp")
