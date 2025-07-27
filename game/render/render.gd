@@ -110,7 +110,7 @@ func _ready() -> void:
 
 var frames: int = 0
 var ticks: int = 0
-var mod_ticks: int = 1
+var mod_ticks: int = 4
 func _process(_delta: float) -> void:
 	if ft == null:
 		return

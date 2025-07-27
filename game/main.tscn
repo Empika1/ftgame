@@ -22,20 +22,20 @@ buffer = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
 [node name="Node" type="Node"]
 
-[node name="Render" type="Node" parent="."]
+[node name="GameManager" type="Node" parent="."]
 script = ExtResource("1_h2yge")
 
-[node name="FTRender" type="FTRender" parent="Render"]
+[node name="FTRender" type="FTRender" parent="GameManager"]
 
-[node name="mmAreas" type="MultiMeshInstance2D" parent="Render/FTRender"]
+[node name="mmAreas" type="MultiMeshInstance2D" parent="GameManager/FTRender"]
 material = ExtResource("2_h2yge")
 multimesh = SubResource("MultiMesh_lquwl")
 
-[node name="mmBorders" type="MultiMeshInstance2D" parent="Render/FTRender"]
+[node name="mmBorders" type="MultiMeshInstance2D" parent="GameManager/FTRender"]
 material = ExtResource("2_h2yge")
 multimesh = SubResource("MultiMesh_7mycd")
 
-[node name="mmInsides" type="MultiMeshInstance2D" parent="Render/FTRender"]
+[node name="mmInsides" type="MultiMeshInstance2D" parent="GameManager/FTRender"]
 material = ExtResource("2_h2yge")
 multimesh = SubResource("MultiMesh_272bh")
 
