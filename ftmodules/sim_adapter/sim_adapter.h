@@ -86,7 +86,11 @@ public:
     static String dtostr(double);
     static double strtod(String);
     static int get_assert_flags();
-    static bool type_is_player(uint16_t type);
+    static bool is_goal_object(uint16_t type);
+    static bool is_circle(uint16_t type);
+    static bool is_wheel(uint16_t type);
+    static bool is_player_movable(uint16_t type);
+    static bool is_player_deletable(uint16_t type);
 };
 
 class FTDesign : public RefCounted {

@@ -96,7 +96,7 @@ func _ready() -> void:
 	render.initVisuals(colors, cornerRadii, borderThicknesses, aaWidth, jointRadius, innerJointThresholdRadius, woodSizePadding, waterSizePadding, ghostRodPadding)
 	
 	#get and parse design
-	var xml = await Requests.retrieve_design(12708646, false)
+	var xml = await Requests.retrieve_design(12709636, false)
 	if !xml[0]:
 		push_error("design retrieval failed")
 		return
@@ -110,7 +110,7 @@ func _ready() -> void:
 
 var frames: int = 0
 var ticks: int = 0
-var mod_ticks: int = 4
+var mod_ticks: int = 2
 func _process(_delta: float) -> void:
 	if ft == null:
 		return

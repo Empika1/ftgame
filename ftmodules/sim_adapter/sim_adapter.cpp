@@ -192,7 +192,11 @@ void FTBackend::_bind_methods() {
     ClassDB::bind_static_method("FTBackend", D_METHOD("dtostr", "value"), &FTBackend::dtostr);
     ClassDB::bind_static_method("FTBackend", D_METHOD("strtod", "value"), &FTBackend::strtod);
     ClassDB::bind_static_method("FTBackend", D_METHOD("get_assert_flags"), &FTBackend::get_assert_flags);
-    ClassDB::bind_static_method("FTBackend", D_METHOD("type_is_player", "type"), &FTBackend::type_is_player);
+    ClassDB::bind_static_method("FTBackend", D_METHOD("is_goal_object", "type"), &FTBackend::is_goal_object);
+    ClassDB::bind_static_method("FTBackend", D_METHOD("is_circle", "type"), &FTBackend::is_circle);
+    ClassDB::bind_static_method("FTBackend", D_METHOD("is_wheel", "type"), &FTBackend::is_wheel);
+    ClassDB::bind_static_method("FTBackend", D_METHOD("is_player_movable", "type"), &FTBackend::is_player_movable);
+    ClassDB::bind_static_method("FTBackend", D_METHOD("is_player_deletable", "type"), &FTBackend::is_player_deletable);
 }
 
 String FTBackend::math_hash() {
@@ -214,11 +218,25 @@ int FTBackend::get_assert_flags() {
     return result;
 }
 
-bool FTBackend::type_is_player(uint16_t type) {
-    return ::type_is_player(static_cast<int>(type));
+bool FTBackend::is_goal_object(uint16_t type) {
+    return ::is_goal_object(static_cast<fcsim_piece_type::type>(type));
 }
 
+bool FTBackend::is_circle(uint16_t type) {
+    return ::is_circle(static_cast<fcsim_piece_type::type>(type));
+}
 
+bool FTBackend::is_wheel(uint16_t type) {
+    return ::is_wheel(static_cast<fcsim_piece_type::type>(type));
+}
+
+bool FTBackend::is_player_movable(uint16_t type) {
+    return ::is_player_movable(static_cast<fcsim_piece_type::type>(type));
+}
+
+bool FTBackend::is_player_deletable(uint16_t type) {
+    return ::is_player_deletable(static_cast<fcsim_piece_type::type>(type));
+}
 
 void FTDesign::_bind_methods() {
     ClassDB::bind_method(D_METHOD("set_blocks", "blocks"), &FTDesign::set_blocks);
@@ -292,7 +310,7 @@ void FTDesign::set_blocks_packed(const PackedByteArray t, const PackedFloat64Arr
     for (int i = 0; i < t.size(); ++i) {
         fcsim_block_def bdef = { static_cast<fcsim_piece_type::type>(t[i]), FCSIM_NO_JOINT, x[i], y[i], 
             w[i], h[i], r[i], static_cast<uint16_t>(j1[i]), static_cast<uint16_t>(j2[i]) };
-        if (type_is_player(bdef.type)) {
+        if (is_player_movable(bdef.type)) {
             bdef.id = j;
             ++j;
         }

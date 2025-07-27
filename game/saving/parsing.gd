@@ -117,7 +117,7 @@ static func parse_block(parser: XMLParser) -> Array:
 			push_error(); return [false, ERR_INVALID_DATA]
 	
 	var id: int = FTBackend.FCSIM_NO_JOINT #TODO: is this the right default value?
-	if FTBackend.type_is_player(type):
+	if FTBackend.is_player_movable(type):
 		var id_str: String = parser.get_named_attribute_value_safe("id")
 		if id_str == "":
 			push_error(); return [false, ERR_INVALID_DATA]
