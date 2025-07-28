@@ -269,8 +269,8 @@ TypedArray<FTBlock> FTDesign::get_blocks() const {
     std::vector<ft_block>* block_vecs [2] {&sim->design.level_blocks, &sim->design.design_blocks};
     for(size_t i = 0; i < 2; i++) {
         const std::vector<ft_block>& blocks = *block_vecs[i];
-        for (size_t i = 0; i < blocks.size(); ++i) {
-            const ft_block& ftb = blocks[i];
+        for (size_t j = 0; j < blocks.size(); ++j) {
+            const ft_block& ftb = blocks[j];
             Ref<FTBlock> block;
             block.instantiate();
             block->bdef = ft_block_def{
@@ -310,8 +310,8 @@ PackedFloat64Array FTDesign::get_slice(int pi) const {
     std::vector<ft_block>* block_vecs [2] {&sim->design.level_blocks, &sim->design.design_blocks};
     for(size_t i = 0; i < 2; i++) {
         const std::vector<ft_block>& blocks = *block_vecs[i];
-        for (size_t i = 0; i < blocks.size(); ++i) {
-            const ft_block& ftb = blocks[i];
+        for (size_t j = 0; j < blocks.size(); ++j) {
+            const ft_block& ftb = blocks[j];
             double data = 0;
             switch(pi) {
                 case 0:
