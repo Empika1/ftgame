@@ -1,5 +1,5 @@
 #include "ftlib.hpp"
-#include "fcsim.h"
+#include "ftsim.h"
 #include "gstr_adapter.hpp"
 
 #include "core/object/ref_counted.h"
@@ -12,7 +12,7 @@ protected:
     static void _bind_methods();
 
 public:
-    fcsim_block_def bdef;
+    ft_block_def bdef;
 
     //TODO: Replace uint16_t with proper enum for piece type. the enum already exists, it's just not bound
     static Ref<FTBlock> init(uint16_t type, uint16_t id, double x, double y, double w, double h, double angle, uint16_t j1, uint16_t j2);
@@ -52,7 +52,7 @@ protected:
     static void _bind_methods();
 
 public:
-    fcsim_rect rect;
+    ft_rect rect;
 
     static Ref<FTRect> init(double x, double y, double w, double h);
 
