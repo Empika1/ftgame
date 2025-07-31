@@ -106,6 +106,7 @@ func _ready() -> void:
 		return
 	ft = parsed_xml[1][5]
 	
+	ft.create_design()
 	ft.start_sim()
 
 var frames: int = 0

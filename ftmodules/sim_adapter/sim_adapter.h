@@ -101,6 +101,7 @@ protected:
 
 private:
     ft_design_spec spec;
+    std::shared_ptr<ft_design> design;
     std::shared_ptr<ft_sim_state> sim;
     ft_sim_settings settings;
 
@@ -114,6 +115,7 @@ public:
     Ref<FTRect> get_build() const;
     void set_goal(const Ref<FTRect> rect);
     Ref<FTRect> get_goal() const;
+    void create_design();
     void start_sim();
     void step_sim();
     bool check_solved() const;

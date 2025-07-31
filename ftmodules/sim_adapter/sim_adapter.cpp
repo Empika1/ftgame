@@ -249,6 +249,7 @@ void FTDesign::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_build"), &FTDesign::get_build);
     ClassDB::bind_method(D_METHOD("set_goal", "rect"), &FTDesign::set_goal);
     ClassDB::bind_method(D_METHOD("get_goal"), &FTDesign::get_goal);
+    ClassDB::bind_method(D_METHOD("create_design"), &FTDesign::create_design);
     ClassDB::bind_method(D_METHOD("start_sim"), &FTDesign::start_sim);
     ClassDB::bind_method(D_METHOD("step_sim"), &FTDesign::step_sim);
     ClassDB::bind_method(D_METHOD("check_solved"), &FTDesign::check_solved);
@@ -365,9 +366,12 @@ Ref<FTRect> FTDesign::get_goal() const {
     return rect;
 }
 
+void FTDesign::create_design() {
+    design = ft_create_design(design, spec);
+}
+
 void FTDesign::start_sim() {
-    sim = nullptr;
-    sim = ft_create_sim(nullptr, spec, settings);
+    sim = ft_create_sim(nullptr, *design, settings);
 }
 
 void FTDesign::step_sim() {
