@@ -8,14 +8,16 @@
 class FTBlock : public RefCounted {
     GDCLASS(FTBlock, RefCounted)
 
-protected:
+  protected:
     static void _bind_methods();
 
-public:
-    ft_block_def bdef;
+  public:
+    ft_block_spec bdef;
 
-    //TODO: Replace uint16_t with proper enum for piece type. the enum already exists, it's just not bound
-    static Ref<FTBlock> init(uint16_t type, uint16_t id, double x, double y, double w, double h, double angle, uint16_t j1, uint16_t j2);
+    // TODO: Replace uint16_t with proper enum for piece type. the enum already exists, it's just
+    // not bound
+    static Ref<FTBlock> init(uint16_t type, uint16_t id, double x, double y, double w, double h,
+                             double angle, uint16_t j1, uint16_t j2);
 
     void set_type(uint16_t type);
     uint16_t get_type() const;
@@ -48,10 +50,10 @@ public:
 class FTRect : public RefCounted {
     GDCLASS(FTRect, RefCounted)
 
-protected:
+  protected:
     static void _bind_methods();
 
-public:
+  public:
     ft_rect rect;
 
     static Ref<FTRect> init(double x, double y, double w, double h);
@@ -78,10 +80,10 @@ std::string from_gd(String);
 class FTBackend : public RefCounted {
     GDCLASS(FTBackend, RefCounted)
 
-protected:
+  protected:
     static void _bind_methods();
 
-public:
+  public:
     static String math_hash();
     static String dtostr(double);
     static double strtod(String);
@@ -96,20 +98,22 @@ public:
 class FTDesign : public RefCounted {
     GDCLASS(FTDesign, RefCounted)
 
-protected:
+  protected:
     static void _bind_methods();
 
-private:
+  private:
     ft_design_spec spec;
     std::shared_ptr<ft_design> design;
     std::shared_ptr<ft_sim_state> sim;
     ft_sim_settings settings;
 
-public:
+  public:
     void set_blocks(const TypedArray<FTBlock> blocks);
     TypedArray<FTBlock> get_blocks() const;
-    void set_blocks_packed(const PackedByteArray t, const PackedFloat64Array x, const PackedFloat64Array y, 
-        const PackedFloat64Array w, const PackedFloat64Array h, const PackedFloat64Array r, const PackedInt32Array j1, const PackedInt32Array j2);
+    void set_blocks_packed(const PackedByteArray t, const PackedFloat64Array x,
+                           const PackedFloat64Array y, const PackedFloat64Array w,
+                           const PackedFloat64Array h, const PackedFloat64Array r,
+                           const PackedInt32Array j1, const PackedInt32Array j2);
     PackedFloat64Array get_slice(int pi) const;
     void set_build(const Ref<FTRect> rect);
     Ref<FTRect> get_build() const;

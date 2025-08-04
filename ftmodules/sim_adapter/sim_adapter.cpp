@@ -1,7 +1,9 @@
 #include "sim_adapter.h"
 
 void FTBlock::_bind_methods() {
-    ClassDB::bind_static_method("FTBlock", D_METHOD("init", "type", "id", "x", "y", "w", "h", "angle", "j1", "j2"), &FTBlock::init);
+    ClassDB::bind_static_method(
+        "FTBlock", D_METHOD("init", "type", "id", "x", "y", "w", "h", "angle", "j1", "j2"),
+        &FTBlock::init);
     ClassDB::bind_method(D_METHOD("set_type", "type"), &FTBlock::set_type);
     ClassDB::bind_method(D_METHOD("get_type"), &FTBlock::get_type);
     ClassDB::bind_method(D_METHOD("set_id", "id"), &FTBlock::set_id);
@@ -32,87 +34,50 @@ void FTBlock::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::INT, "joint_2"), "set_joint_2", "get_joint_2");
 }
 
-Ref<FTBlock> FTBlock::init(uint16_t type, uint16_t id, double x, double y, double w, double h, double angle, uint16_t j1, uint16_t j2) {
+Ref<FTBlock> FTBlock::init(uint16_t type, uint16_t id, double x, double y, double w, double h,
+                           double angle, uint16_t j1, uint16_t j2) {
     Ref<FTBlock> block;
     block.instantiate();
-    ft_block_def bdef{static_cast<ft_piece_type::type>(type), id, x, y, w, h, angle, {j1, j2}};
+    ft_block_spec bdef{static_cast<ft_piece_type::type>(type), id, x, y, w, h, angle, {j1, j2}};
     block->bdef = bdef;
     return block;
 }
 
-void FTBlock::set_type(uint16_t type) {
-    bdef.type = static_cast<ft_piece_type::type>(type);
-}
+void FTBlock::set_type(uint16_t type) { bdef.type = static_cast<ft_piece_type::type>(type); }
 
-uint16_t FTBlock::get_type() const {
-    return bdef.type;
-}
+uint16_t FTBlock::get_type() const { return bdef.type; }
 
-void FTBlock::set_id(uint16_t id) {
-    bdef.id = id;
-}
+void FTBlock::set_id(uint16_t id) { bdef.id = id; }
 
-uint16_t FTBlock::get_id() const {
-    return bdef.id;
-}
+uint16_t FTBlock::get_id() const { return bdef.id; }
 
-void FTBlock::set_x(double x) {
-    bdef.x = x;
-}
+void FTBlock::set_x(double x) { bdef.x = x; }
 
-double FTBlock::get_x() const {
-    return bdef.x;
-}
+double FTBlock::get_x() const { return bdef.x; }
 
-void FTBlock::set_y(double y) {
-    bdef.y = y;
-}
+void FTBlock::set_y(double y) { bdef.y = y; }
 
-double FTBlock::get_y() const {
-    return bdef.y;
-}
+double FTBlock::get_y() const { return bdef.y; }
 
-void FTBlock::set_w(double w) {
-    bdef.w = w;
-}
+void FTBlock::set_w(double w) { bdef.w = w; }
 
-double FTBlock::get_w() const {
-    return bdef.w;
-}
+double FTBlock::get_w() const { return bdef.w; }
 
-void FTBlock::set_h(double h) {
-    bdef.h = h;
-}
+void FTBlock::set_h(double h) { bdef.h = h; }
 
-double FTBlock::get_h() const {
-    return bdef.h;
-}
+double FTBlock::get_h() const { return bdef.h; }
 
-void FTBlock::set_angle(double angle) {
-    bdef.angle = angle;
-}
+void FTBlock::set_angle(double angle) { bdef.angle = angle; }
 
-double FTBlock::get_angle() const {
-    return bdef.angle;
-}
+double FTBlock::get_angle() const { return bdef.angle; }
 
-void FTBlock::set_joint_1(uint16_t joint) {
-    bdef.joints[0] = joint;
-}
+void FTBlock::set_joint_1(uint16_t joint) { bdef.joints[0] = joint; }
 
-uint16_t FTBlock::get_joint_1() const {
-    return bdef.joints[0];
-}
+uint16_t FTBlock::get_joint_1() const { return bdef.joints[0]; }
 
-void FTBlock::set_joint_2(uint16_t joint) {
-    bdef.joints[1] = joint;
-}
+void FTBlock::set_joint_2(uint16_t joint) { bdef.joints[1] = joint; }
 
-uint16_t FTBlock::get_joint_2() const {
-    return bdef.joints[1];
-}
-
-
+uint16_t FTBlock::get_joint_2() const { return bdef.joints[1]; }
 
 void FTRect::_bind_methods() {
     ClassDB::bind_static_method("FTRect", D_METHOD("init", "x", "y", "w", "h"), &FTRect::init);
@@ -139,43 +104,23 @@ Ref<FTRect> FTRect::init(double x, double y, double w, double h) {
     return rect;
 }
 
-void FTRect::set_x(double x) {
-    rect.x = x;
-}
+void FTRect::set_x(double x) { rect.x = x; }
 
-double FTRect::get_x() const {
-    return rect.x;
-}
+double FTRect::get_x() const { return rect.x; }
 
-void FTRect::set_y(double y) {
-    rect.y = y;
-}
+void FTRect::set_y(double y) { rect.y = y; }
 
-double FTRect::get_y() const {
-    return rect.y;
-}
+double FTRect::get_y() const { return rect.y; }
 
-void FTRect::set_w(double w) {
-    rect.w = w;
-}
+void FTRect::set_w(double w) { rect.w = w; }
 
-double FTRect::get_w() const {
-    return rect.w;
-}
+double FTRect::get_w() const { return rect.w; }
 
-void FTRect::set_h(double h) {
-    rect.h = h;
-}
+void FTRect::set_h(double h) { rect.h = h; }
 
-double FTRect::get_h() const {
-    return rect.h;
-}
+double FTRect::get_h() const { return rect.h; }
 
-
-
-String to_gd(std::string s) {
-    return String(s.c_str());
-}
+String to_gd(std::string s) { return String(s.c_str()); }
 
 std::string from_gd(String s) {
     std::string result;
@@ -193,30 +138,32 @@ void FTBackend::_bind_methods() {
     ClassDB::bind_static_method("FTBackend", D_METHOD("math_hash"), &FTBackend::math_hash);
     ClassDB::bind_static_method("FTBackend", D_METHOD("dtostr", "value"), &FTBackend::dtostr);
     ClassDB::bind_static_method("FTBackend", D_METHOD("strtod", "value"), &FTBackend::strtod);
-    ClassDB::bind_static_method("FTBackend", D_METHOD("get_assert_flags"), &FTBackend::get_assert_flags);
-    ClassDB::bind_static_method("FTBackend", D_METHOD("is_goal_object", "type"), &FTBackend::is_goal_object);
+    ClassDB::bind_static_method("FTBackend", D_METHOD("get_assert_flags"),
+                                &FTBackend::get_assert_flags);
+    ClassDB::bind_static_method("FTBackend", D_METHOD("is_goal_object", "type"),
+                                &FTBackend::is_goal_object);
     ClassDB::bind_static_method("FTBackend", D_METHOD("is_circle", "type"), &FTBackend::is_circle);
     ClassDB::bind_static_method("FTBackend", D_METHOD("is_wheel", "type"), &FTBackend::is_wheel);
-    ClassDB::bind_static_method("FTBackend", D_METHOD("is_player_movable", "type"), &FTBackend::is_player_movable);
-    ClassDB::bind_static_method("FTBackend", D_METHOD("is_player_deletable", "type"), &FTBackend::is_player_deletable);
+    ClassDB::bind_static_method("FTBackend", D_METHOD("is_player_movable", "type"),
+                                &FTBackend::is_player_movable);
+    ClassDB::bind_static_method("FTBackend", D_METHOD("is_player_deletable", "type"),
+                                &FTBackend::is_player_deletable);
 }
 
-String FTBackend::math_hash() {
-    return to_gd(ft_math_hash());
-}
+String FTBackend::math_hash() { return to_gd(ft_math_hash()); }
 
-String FTBackend::dtostr(double v) {
-    return to_gd(ft_dtostr(v));
-}
+String FTBackend::dtostr(double v) { return to_gd(ft_dtostr(v)); }
 
-double FTBackend::strtod(String s) {
-    return ft_strtod_elsenan(from_gd(s));
-}
+double FTBackend::strtod(String s) { return ft_strtod_elsenan(from_gd(s)); }
 
 int FTBackend::get_assert_flags() {
     int result = 0;
-    if (get_assert_flag()) { result |= 1; }
-    if (get_assertmem_flag()) { result |= 2; }
+    if (get_assert_flag()) {
+        result |= 1;
+    }
+    if (get_assertmem_flag()) {
+        result |= 2;
+    }
     return result;
 }
 
@@ -243,7 +190,8 @@ bool FTBackend::is_player_deletable(uint16_t type) {
 void FTDesign::_bind_methods() {
     ClassDB::bind_method(D_METHOD("set_blocks", "blocks"), &FTDesign::set_blocks);
     ClassDB::bind_method(D_METHOD("get_blocks"), &FTDesign::get_blocks);
-    ClassDB::bind_method(D_METHOD("set_blocks_packed", "type", "x", "y", "w", "h", "r", "j1", "j2"), &FTDesign::set_blocks_packed);
+    ClassDB::bind_method(D_METHOD("set_blocks_packed", "type", "x", "y", "w", "h", "r", "j1", "j2"),
+                         &FTDesign::set_blocks_packed);
     ClassDB::bind_method(D_METHOD("get_slice"), &FTDesign::get_slice);
     ClassDB::bind_method(D_METHOD("set_build", "rect"), &FTDesign::set_build);
     ClassDB::bind_method(D_METHOD("get_build"), &FTDesign::get_build);
@@ -256,10 +204,10 @@ void FTDesign::_bind_methods() {
 }
 
 void FTDesign::set_blocks(const TypedArray<FTBlock> blocks) {
-    spec.blocks = std::vector<ft_block_def>();
+    spec.blocks = std::vector<ft_block_spec>();
     for (int i = 0; i < blocks.size(); ++i) {
         Ref<FTBlock> block = blocks[i];
-        ft_block_def bdef = block->bdef;
+        ft_block_spec bdef = block->bdef;
         spec.blocks.push_back(bdef);
     }
 }
@@ -267,14 +215,14 @@ void FTDesign::set_blocks(const TypedArray<FTBlock> blocks) {
 TypedArray<FTBlock> FTDesign::get_blocks() const {
     TypedArray<FTBlock> result;
 
-    std::vector<ft_block>* block_vecs [2] {&sim->design.level_blocks, &sim->design.design_blocks};
-    for(size_t i = 0; i < 2; i++) {
+    std::vector<ft_block>* block_vecs[2]{&sim->design.level_blocks, &sim->design.design_blocks};
+    for (size_t i = 0; i < 2; i++) {
         const std::vector<ft_block>& blocks = *block_vecs[i];
         for (size_t j = 0; j < blocks.size(); ++j) {
             const ft_block& ftb = blocks[j];
             Ref<FTBlock> block;
             block.instantiate();
-            block->bdef = ft_block_def{
+            block->bdef = ft_block_spec{
                 .type = ftb.type,
                 .id = FT_NO_ID,
                 .x = ftb.x,
@@ -290,13 +238,22 @@ TypedArray<FTBlock> FTDesign::get_blocks() const {
     return result;
 }
 
-void FTDesign::set_blocks_packed(const PackedByteArray t, const PackedFloat64Array x, const PackedFloat64Array y, 
-    const PackedFloat64Array w, const PackedFloat64Array h, const PackedFloat64Array r, const PackedInt32Array j1, const PackedInt32Array j2) {
-    spec.blocks = std::vector<ft_block_def>();
+void FTDesign::set_blocks_packed(const PackedByteArray t, const PackedFloat64Array x,
+                                 const PackedFloat64Array y, const PackedFloat64Array w,
+                                 const PackedFloat64Array h, const PackedFloat64Array r,
+                                 const PackedInt32Array j1, const PackedInt32Array j2) {
+    spec.blocks = std::vector<ft_block_spec>();
     int j = 0;
     for (int i = 0; i < t.size(); ++i) {
-        ft_block_def bdef { static_cast<ft_piece_type::type>(t[i]), FT_NO_ID, x[i], y[i], 
-            w[i], h[i], r[i], static_cast<uint16_t>(j1[i]), static_cast<uint16_t>(j2[i]) };
+        ft_block_spec bdef{static_cast<ft_piece_type::type>(t[i]),
+                           FT_NO_ID,
+                           x[i],
+                           y[i],
+                           w[i],
+                           h[i],
+                           r[i],
+                           static_cast<uint16_t>(j1[i]),
+                           static_cast<uint16_t>(j2[i])};
         if (ft_is_player_movable(bdef.type)) {
             bdef.id = j;
             ++j;
@@ -308,34 +265,34 @@ void FTDesign::set_blocks_packed(const PackedByteArray t, const PackedFloat64Arr
 PackedFloat64Array FTDesign::get_slice(int pi) const {
     PackedFloat64Array result;
 
-    std::vector<ft_block>* block_vecs [2] {&sim->design.level_blocks, &sim->design.design_blocks};
-    for(size_t i = 0; i < 2; i++) {
+    std::vector<ft_block>* block_vecs[2]{&sim->design.level_blocks, &sim->design.design_blocks};
+    for (size_t i = 0; i < 2; i++) {
         const std::vector<ft_block>& blocks = *block_vecs[i];
         for (size_t j = 0; j < blocks.size(); ++j) {
             const ft_block& ftb = blocks[j];
             double data = 0;
-            switch(pi) {
-                case 0:
-                    data = static_cast<double>(ftb.type);
-                    break;
-                case 1:
-                    data = static_cast<double>(ftb.block_idx);
-                    break;
-                case 2:
-                    data = ftb.x;
-                    break;
-                case 3:
-                    data = ftb.y;
-                    break;
-                case 4:
-                    data = ftb.w;
-                    break;
-                case 5:
-                    data = ftb.h;
-                    break;
-                case 6:
-                    data = ftb.angle;
-                    break;
+            switch (pi) {
+            case 0:
+                data = static_cast<double>(ftb.type);
+                break;
+            case 1:
+                data = static_cast<double>(ftb.block_idx);
+                break;
+            case 2:
+                data = ftb.x;
+                break;
+            case 3:
+                data = ftb.y;
+                break;
+            case 4:
+                data = ftb.w;
+                break;
+            case 5:
+                data = ftb.h;
+                break;
+            case 6:
+                data = ftb.angle;
+                break;
             }
             result.push_back(data);
         }
@@ -344,9 +301,7 @@ PackedFloat64Array FTDesign::get_slice(int pi) const {
     return result;
 }
 
-void FTDesign::set_build(const Ref<FTRect> rect) {
-    spec.build = rect->rect;
-}
+void FTDesign::set_build(const Ref<FTRect> rect) { spec.build = rect->rect; }
 
 Ref<FTRect> FTDesign::get_build() const {
     Ref<FTRect> rect;
@@ -355,9 +310,7 @@ Ref<FTRect> FTDesign::get_build() const {
     return rect;
 }
 
-void FTDesign::set_goal(const Ref<FTRect> rect) {
-    spec.goal = rect->rect;
-}
+void FTDesign::set_goal(const Ref<FTRect> rect) { spec.goal = rect->rect; }
 
 Ref<FTRect> FTDesign::get_goal() const {
     Ref<FTRect> rect;
@@ -366,18 +319,10 @@ Ref<FTRect> FTDesign::get_goal() const {
     return rect;
 }
 
-void FTDesign::create_design() {
-    design = ft_create_design(design, spec);
-}
+void FTDesign::create_design() { design = ft_create_design(design, spec); }
 
-void FTDesign::start_sim() {
-    sim = ft_create_sim(nullptr, *design, settings);
-}
+void FTDesign::start_sim() { sim = ft_create_sim(nullptr, *design, settings); }
 
-void FTDesign::step_sim() {
-    ft_step_sim(sim, settings);
-}
+void FTDesign::step_sim() { ft_step_sim(sim, settings); }
 
-bool FTDesign::check_solved() const {
-    return ft_is_solved(sim, spec);
-}
+bool FTDesign::check_solved() const { return ft_is_solved(sim, spec); }
