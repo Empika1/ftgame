@@ -1,9 +1,30 @@
+#ifndef FTSIMADAPTER_H
+#define FTSIMADAPTER_H
+
+#include "bind_enum_class_constant.h"
 #include "ftlib.hpp"
 #include "ftsim.h"
 #include "gstr_adapter.hpp"
 
 #include "core/object/ref_counted.h"
 #include "core/variant/typed_array.h"
+
+struct FTSimPieceType {
+    enum Type : uint8_t {
+        STATIC_RECT = ft_piece_type::STATIC_RECT,
+        STATIC_CIRC = ft_piece_type::STATIC_CIRC,
+        DYNAMIC_RECT = ft_piece_type::DYNAMIC_RECT,
+        DYNAMIC_CIRC = ft_piece_type::DYNAMIC_CIRC,
+        GP_RECT = ft_piece_type::GP_RECT,
+        GP_CIRC = ft_piece_type::GP_CIRC,
+        UPW = ft_piece_type::UPW,
+        CW = ft_piece_type::CW,
+        CCW = ft_piece_type::CCW,
+        WATER = ft_piece_type::WATER,
+        WOOD = ft_piece_type::WOOD,
+        SIZE = ft_piece_type::SIZE,
+    };
+};
 
 class FTBlock : public RefCounted {
     GDCLASS(FTBlock, RefCounted)
@@ -124,3 +145,7 @@ class FTDesign : public RefCounted {
     void step_sim();
     bool check_solved() const;
 };
+
+VARIANT_ENUM_CAST(FTSimPieceType::Type);
+
+#endif // FTSIMADAPTER_H

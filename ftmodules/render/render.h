@@ -1,6 +1,7 @@
 #ifndef FTRENDER_H
 #define FTRENDER_H
 
+#include "ftsim.h"
 #include "core/math/color.h"
 #include "core/object/ref_counted.h"
 #include "core/variant/variant.h"
@@ -44,31 +45,31 @@ struct FTObjType {
         GOAL_INSIDE,
         JOINT_NORMAL,
         JOINT_WHEEL_CENTER,
-        OBJ_TYPE_SIZE,
+        SIZE,
     };
 };
 
-struct FTPieceType {
+struct FTRenderPieceType {
     enum Type : uint8_t {
-        STATIC_RECT,
-        STATIC_CIRC,
-        DYNAMIC_RECT,
-        DYNAMIC_CIRC,
-        GP_RECT,
-        GP_CIRC,
-        UPW,
-        CW,
-        CCW,
-        WATER,
-        WOOD,
-        BUILD,
+        STATIC_RECT = ft_piece_type::STATIC_RECT,
+        STATIC_CIRC = ft_piece_type::STATIC_CIRC,
+        DYNAMIC_RECT = ft_piece_type::DYNAMIC_RECT,
+        DYNAMIC_CIRC = ft_piece_type::DYNAMIC_CIRC,
+        GP_RECT = ft_piece_type::GP_RECT,
+        GP_CIRC = ft_piece_type::GP_CIRC,
+        UPW = ft_piece_type::UPW,
+        CW = ft_piece_type::CW,
+        CCW = ft_piece_type::CCW,
+        WATER = ft_piece_type::WATER,
+        WOOD = ft_piece_type::WOOD,
+        BUILD = ft_piece_type::SIZE, //ensure it's larger than any previous
         GOAL,
-        PIECE_TYPE_SIZE
+        SIZE
     };
 };
 
 struct FTSdfType {
-    enum Type : uint8_t { ROUNDED_RECT, UPW, CW, CCW, SDF_TYPE_SIZE };
+    enum Type : uint8_t { ROUNDED_RECT, UPW, CW, CCW, SIZE };
 };
 
 static const int LAYER_COUNT = 3;
@@ -136,9 +137,9 @@ class FTRender : public Node {
     void setBorderThickness(FTObjType::Type objType, double borderThickness);
     double getBorderThickness(FTObjType::Type objType) const;
 
-    static FTObjType::Type getPieceBorder(FTPieceType::Type piece);
-    static FTObjType::Type getPieceInside(FTPieceType::Type piece);
-    static FTObjType::Type getPieceDecal(FTPieceType::Type piece);
+    static FTObjType::Type getPieceBorder(FTRenderPieceType::Type piece);
+    static FTObjType::Type getPieceInside(FTRenderPieceType::Type piece);
+    static FTObjType::Type getPieceDecal(FTRenderPieceType::Type piece);
     static bool getObjIsCircle(FTObjType::Type obj);
     static FTSdfType::Type getObjSdfType(FTObjType::Type obj);
 
@@ -155,19 +156,19 @@ class FTRender : public Node {
     void render(float scale, Vector2 shift);
 
   private:
-    void addRoundedRect(Vector2 pos, Vector2 size, float rotation, FTPieceType::Type type,
+    void addRoundedRect(Vector2 pos, Vector2 size, float rotation, FTRenderPieceType::Type type,
                         RenderLayer& borderLayer, RenderLayer& insideLayer);
-    void addRoundedRectPiece(Vector2 pos, Vector2 size, float rotation, FTPieceType::Type type);
-    void addArea(Vector2 pos, Vector2 size, float rotation, FTPieceType::Type type);
-    void addCirclePiece(Vector2 pos, float diameter, float rotation, FTPieceType::Type type);
+    void addRoundedRectPiece(Vector2 pos, Vector2 size, float rotation, FTRenderPieceType::Type type);
+    void addArea(Vector2 pos, Vector2 size, float rotation, FTRenderPieceType::Type type);
+    void addCirclePiece(Vector2 pos, float diameter, float rotation, FTRenderPieceType::Type type);
     void addJoint(Vector2 pos, float rotation, FTObjType::Type type);
     void addRectJoints(Vector2 pos, Vector2 size, float rotation);
-    void addJointedRect(Vector2 pos, Vector2 size, float rotation, FTPieceType::Type type);
+    void addJointedRect(Vector2 pos, Vector2 size, float rotation, FTRenderPieceType::Type type);
     void addRodJoints(Vector2 pos, Vector2 size, float rotation);
-    void addJointedRod(Vector2 pos, Vector2 size, float rotation, FTPieceType::Type type);
-    void addCircleJoints(Vector2 pos, float diameter, float rotation, FTPieceType::Type type);
-    void addJointedCircle(Vector2 pos, float diameter, float rotation, FTPieceType::Type type);
-    void addDecalCircle(Vector2 pos, float diameter, float rotation, FTPieceType::Type type);
+    void addJointedRod(Vector2 pos, Vector2 size, float rotation, FTRenderPieceType::Type type);
+    void addCircleJoints(Vector2 pos, float diameter, float rotation, FTRenderPieceType::Type type);
+    void addJointedCircle(Vector2 pos, float diameter, float rotation, FTRenderPieceType::Type type);
+    void addDecalCircle(Vector2 pos, float diameter, float rotation, FTRenderPieceType::Type type);
 
   public:
     void addStaticRect(Vector2 pos, Vector2 size, float rotation);
@@ -183,7 +184,7 @@ class FTRender : public Node {
     void addUPW(Vector2 pos, float diameter, float rotation);
     void addBuildArea(Vector2 pos, Vector2 size, float rotation);
     void addGoalArea(Vector2 pos, Vector2 size, float rotation);
-    void addPiece(FTPieceType::Type type, Vector2 pos, Vector2 size,
+    void addPiece(FTRenderPieceType::Type type, Vector2 pos, Vector2 size,
                   float rotation); // if circle, pos.x is used as diameter
 
     void initLayers(int32_t layerMultimeshInstanceCount_, Vector2i layerDataImageSize);
@@ -196,7 +197,7 @@ class FTRender : public Node {
 };
 
 VARIANT_ENUM_CAST(FTObjType::Type);
-VARIANT_ENUM_CAST(FTPieceType::Type);
+VARIANT_ENUM_CAST(FTRenderPieceType::Type);
 VARIANT_ENUM_CAST(FTSdfType::Type);
 
 #endif // FTRENDER_H

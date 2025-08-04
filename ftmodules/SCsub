@@ -2,15 +2,13 @@
 
 Import('env')
 
-modules_env = env.Clone()
-modules_env.Append(
-    CPPPATH=[".", "render", "sim_adapter"],
-    CXXFLAGS=["-std=c++20"]
-)
+env.Append(CPPPATH=[".", "bind_enum_class_constant", "render", "sim_adapter"])
 
-modules_env['godot'] = True
+env['godot'] = True
 SConscript('ftlib/src/SCsub')
 
-modules_env.add_source_files(modules_env.modules_sources, "*.cpp") # Add all cpp files to the build
-modules_env.add_source_files(modules_env.modules_sources, "render/*.cpp")
-modules_env.add_source_files(modules_env.modules_sources, "sim_adapter/*.cpp")
+print(env.get("CPPPATH"))
+
+env.add_source_files(env.modules_sources, "*.cpp") # Add all cpp files to the build
+env.add_source_files(env.modules_sources, "render/*.cpp")
+env.add_source_files(env.modules_sources, "sim_adapter/*.cpp")

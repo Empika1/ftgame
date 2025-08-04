@@ -1,4 +1,5 @@
 #include "render.h"
+#include "bind_enum_class_constant.h"
 #include "core/math/vector2.h"
 #include "core/os/memory.h"
 #include "core/string/print_string.h"
@@ -80,9 +81,10 @@ void RenderLayer::renderPartial(float scale, Vector2 shift, float aaWidth, Packe
         Color color = colors[type];
         Vector2 size = sizes[i] * scale;
         float cornerRadius = getObjIsCircle(type) ? size.x * 0.5 : cornerRadii[type] * scale;
-        float borderThickness = type == FTObjType::JOINT_NORMAL || type == FTObjType::JOINT_WHEEL_CENTER
-                                    ? borderThicknesses[type] * scale
-                                    : INFINITY;
+        float borderThickness =
+            type == FTObjType::JOINT_NORMAL || type == FTObjType::JOINT_WHEEL_CENTER
+                ? borderThicknesses[type] * scale
+                : INFINITY;
         FTSdfType::Type sdfType = getObjSdfType(type);
 
         Color data = packDataToColor(color, size, cornerRadius, borderThickness, sdfType);
@@ -102,12 +104,6 @@ void RenderLayer::init(MultiMeshInstance2D* mmi_, uint32_t layerID_,
     poses.resize(multimeshInstanceCount);
     objTypes.resize(multimeshInstanceCount);
 }
-
-#define BIND_ENUM_CLASS_CONSTANT(m_class, m_constant)                                              \
-    ::ClassDB::bind_integer_constant(                                                              \
-        get_class_static(),                                                                        \
-        __constant_get_enum_name(m_class ::m_constant, #m_class "::" #m_constant),                 \
-        #m_class "_" #m_constant, m_class ::m_constant);
 
 void FTRender::_bind_methods() {
     BIND_ENUM_CLASS_CONSTANT(FTObjType, STATIC_RECT_BORDER);
@@ -141,28 +137,28 @@ void FTRender::_bind_methods() {
     BIND_ENUM_CLASS_CONSTANT(FTObjType, GOAL_INSIDE);
     BIND_ENUM_CLASS_CONSTANT(FTObjType, JOINT_NORMAL);
     BIND_ENUM_CLASS_CONSTANT(FTObjType, JOINT_WHEEL_CENTER);
-    BIND_ENUM_CLASS_CONSTANT(FTObjType, OBJ_TYPE_SIZE);
+    BIND_ENUM_CLASS_CONSTANT(FTObjType, SIZE);
 
-    BIND_ENUM_CLASS_CONSTANT(FTPieceType, STATIC_RECT);
-    BIND_ENUM_CLASS_CONSTANT(FTPieceType, STATIC_CIRC);
-    BIND_ENUM_CLASS_CONSTANT(FTPieceType, DYNAMIC_RECT);
-    BIND_ENUM_CLASS_CONSTANT(FTPieceType, DYNAMIC_CIRC);
-    BIND_ENUM_CLASS_CONSTANT(FTPieceType, GP_RECT);
-    BIND_ENUM_CLASS_CONSTANT(FTPieceType, GP_CIRC);
-    BIND_ENUM_CLASS_CONSTANT(FTPieceType, WOOD);
-    BIND_ENUM_CLASS_CONSTANT(FTPieceType, WATER);
-    BIND_ENUM_CLASS_CONSTANT(FTPieceType, CW);
-    BIND_ENUM_CLASS_CONSTANT(FTPieceType, CCW);
-    BIND_ENUM_CLASS_CONSTANT(FTPieceType, UPW);
-    BIND_ENUM_CLASS_CONSTANT(FTPieceType, BUILD);
-    BIND_ENUM_CLASS_CONSTANT(FTPieceType, GOAL);
-    BIND_ENUM_CLASS_CONSTANT(FTPieceType, PIECE_TYPE_SIZE);
+    BIND_ENUM_CLASS_CONSTANT(FTRenderPieceType, STATIC_RECT);
+    BIND_ENUM_CLASS_CONSTANT(FTRenderPieceType, STATIC_CIRC);
+    BIND_ENUM_CLASS_CONSTANT(FTRenderPieceType, DYNAMIC_RECT);
+    BIND_ENUM_CLASS_CONSTANT(FTRenderPieceType, DYNAMIC_CIRC);
+    BIND_ENUM_CLASS_CONSTANT(FTRenderPieceType, GP_RECT);
+    BIND_ENUM_CLASS_CONSTANT(FTRenderPieceType, GP_CIRC);
+    BIND_ENUM_CLASS_CONSTANT(FTRenderPieceType, CW);
+    BIND_ENUM_CLASS_CONSTANT(FTRenderPieceType, CCW);
+    BIND_ENUM_CLASS_CONSTANT(FTRenderPieceType, UPW);
+	BIND_ENUM_CLASS_CONSTANT(FTRenderPieceType, WOOD);
+    BIND_ENUM_CLASS_CONSTANT(FTRenderPieceType, WATER);
+    BIND_ENUM_CLASS_CONSTANT(FTRenderPieceType, BUILD);
+    BIND_ENUM_CLASS_CONSTANT(FTRenderPieceType, GOAL);
+    BIND_ENUM_CLASS_CONSTANT(FTRenderPieceType, SIZE);
 
     BIND_ENUM_CLASS_CONSTANT(FTSdfType, ROUNDED_RECT);
     BIND_ENUM_CLASS_CONSTANT(FTSdfType, CW);
     BIND_ENUM_CLASS_CONSTANT(FTSdfType, CCW);
     BIND_ENUM_CLASS_CONSTANT(FTSdfType, UPW);
-    BIND_ENUM_CLASS_CONSTANT(FTSdfType, SDF_TYPE_SIZE);
+    BIND_ENUM_CLASS_CONSTANT(FTSdfType, SIZE);
 
     BIND_CONSTANT(LAYER_COUNT);
 
@@ -260,82 +256,82 @@ double FTRender::getBorderThickness(FTObjType::Type objType) const {
     return borderThicknesses[objType];
 }
 
-FTObjType::Type FTRender::getPieceBorder(FTPieceType::Type piece) {
+FTObjType::Type FTRender::getPieceBorder(FTRenderPieceType::Type piece) {
     switch (piece) {
-    case FTPieceType::STATIC_RECT:
+    case FTRenderPieceType::STATIC_RECT:
         return FTObjType::STATIC_RECT_BORDER;
-    case FTPieceType::STATIC_CIRC:
+    case FTRenderPieceType::STATIC_CIRC:
         return FTObjType::STATIC_CIRC_BORDER;
-    case FTPieceType::DYNAMIC_RECT:
+    case FTRenderPieceType::DYNAMIC_RECT:
         return FTObjType::DYNAMIC_RECT_BORDER;
-    case FTPieceType::DYNAMIC_CIRC:
+    case FTRenderPieceType::DYNAMIC_CIRC:
         return FTObjType::DYNAMIC_CIRC_BORDER;
-    case FTPieceType::GP_RECT:
+    case FTRenderPieceType::GP_RECT:
         return FTObjType::GP_RECT_BORDER;
-    case FTPieceType::GP_CIRC:
+    case FTRenderPieceType::GP_CIRC:
         return FTObjType::GP_CIRC_BORDER;
-    case FTPieceType::UPW:
+    case FTRenderPieceType::UPW:
         return FTObjType::UPW_BORDER;
-    case FTPieceType::CW:
+    case FTRenderPieceType::CW:
         return FTObjType::CW_BORDER;
-    case FTPieceType::CCW:
+    case FTRenderPieceType::CCW:
         return FTObjType::CCW_BORDER;
-    case FTPieceType::WATER:
+    case FTRenderPieceType::WATER:
         return FTObjType::WATER_BORDER;
-    case FTPieceType::WOOD:
+    case FTRenderPieceType::WOOD:
         return FTObjType::WOOD_BORDER;
-    case FTPieceType::BUILD:
+    case FTRenderPieceType::BUILD:
         return FTObjType::BUILD_BORDER;
-    case FTPieceType::GOAL:
+    case FTRenderPieceType::GOAL:
         return FTObjType::GOAL_BORDER;
     default:
-        ERR_FAIL_V_MSG(FTObjType::OBJ_TYPE_SIZE, "Invalid piece type!");
+        ERR_FAIL_V_MSG(FTObjType::SIZE, "Invalid piece type!");
     }
 }
 
-FTObjType::Type FTRender::getPieceInside(FTPieceType::Type piece) {
+FTObjType::Type FTRender::getPieceInside(FTRenderPieceType::Type piece) {
     switch (piece) {
-    case FTPieceType::STATIC_RECT:
+    case FTRenderPieceType::STATIC_RECT:
         return FTObjType::STATIC_RECT_INSIDE;
-    case FTPieceType::STATIC_CIRC:
+    case FTRenderPieceType::STATIC_CIRC:
         return FTObjType::STATIC_CIRC_INSIDE;
-    case FTPieceType::DYNAMIC_RECT:
+    case FTRenderPieceType::DYNAMIC_RECT:
         return FTObjType::DYNAMIC_RECT_INSIDE;
-    case FTPieceType::DYNAMIC_CIRC:
+    case FTRenderPieceType::DYNAMIC_CIRC:
         return FTObjType::DYNAMIC_CIRC_INSIDE;
-    case FTPieceType::GP_RECT:
+    case FTRenderPieceType::GP_RECT:
         return FTObjType::GP_RECT_INSIDE;
-    case FTPieceType::GP_CIRC:
+    case FTRenderPieceType::GP_CIRC:
         return FTObjType::GP_CIRC_INSIDE;
-    case FTPieceType::UPW:
+    case FTRenderPieceType::UPW:
         return FTObjType::UPW_INSIDE;
-    case FTPieceType::CW:
+    case FTRenderPieceType::CW:
         return FTObjType::CW_INSIDE;
-    case FTPieceType::CCW:
+    case FTRenderPieceType::CCW:
         return FTObjType::CCW_INSIDE;
-    case FTPieceType::WATER:
+    case FTRenderPieceType::WATER:
         return FTObjType::WATER_INSIDE;
-    case FTPieceType::WOOD:
+    case FTRenderPieceType::WOOD:
         return FTObjType::WOOD_INSIDE;
-    case FTPieceType::BUILD:
+    case FTRenderPieceType::BUILD:
         return FTObjType::BUILD_INSIDE;
-    case FTPieceType::GOAL:
+    case FTRenderPieceType::GOAL:
         return FTObjType::GOAL_INSIDE;
     default:
-        ERR_FAIL_V_MSG(FTObjType::OBJ_TYPE_SIZE, "Invalid piece type!");
+        ERR_FAIL_V_MSG(FTObjType::SIZE, "Invalid piece type!");
     }
 }
 
-FTObjType::Type FTRender::getPieceDecal(FTPieceType::Type piece) {
+FTObjType::Type FTRender::getPieceDecal(FTRenderPieceType::Type piece) {
     switch (piece) {
-    case FTPieceType::UPW:
+    case FTRenderPieceType::UPW:
         return FTObjType::UPW_DECAL;
-    case FTPieceType::CW:
+    case FTRenderPieceType::CW:
         return FTObjType::CW_DECAL;
-    case FTPieceType::CCW:
+    case FTRenderPieceType::CCW:
         return FTObjType::CCW_DECAL;
     default:
-        ERR_FAIL_V_MSG(FTObjType::OBJ_TYPE_SIZE, "This piece type doesn't have a decal!");
+        ERR_FAIL_V_MSG(FTObjType::SIZE, "This piece type doesn't have a decal!");
     }
 }
 
@@ -408,8 +404,9 @@ float getRealBorderSize(float size, float insideSize, float ghostRodPadding) {
     return MAX(size, insideSize + ghostRodPadding * 2);
 }
 
-void FTRender::addRoundedRect(Vector2 pos, Vector2 size, float rotation, FTPieceType::Type type,
-                              RenderLayer& borderLayer, RenderLayer& insideLayer) {
+void FTRender::addRoundedRect(Vector2 pos, Vector2 size, float rotation,
+                              FTRenderPieceType::Type type, RenderLayer& borderLayer,
+                              RenderLayer& insideLayer) {
     FTObjType::Type borderType = FTRender::getPieceBorder(type);
     FTObjType::Type insideType = FTRender::getPieceInside(type);
     Vector2 borderThickness{borderThicknesses[borderType], borderThicknesses[borderType]};
@@ -422,15 +419,16 @@ void FTRender::addRoundedRect(Vector2 pos, Vector2 size, float rotation, FTPiece
 }
 
 void FTRender::addRoundedRectPiece(Vector2 pos, Vector2 size, float rotation,
-                                   FTPieceType::Type type) {
+                                   FTRenderPieceType::Type type) {
     addRoundedRect(pos, size, rotation, type, layers[1], layers[2]);
 }
 
-void FTRender::addArea(Vector2 pos, Vector2 size, float rotation, FTPieceType::Type type) {
+void FTRender::addArea(Vector2 pos, Vector2 size, float rotation, FTRenderPieceType::Type type) {
     addRoundedRect(pos, size, rotation, type, layers[0], layers[0]);
 }
 
-void FTRender::addCirclePiece(Vector2 pos, float diameter, float rotation, FTPieceType::Type type) {
+void FTRender::addCirclePiece(Vector2 pos, float diameter, float rotation,
+                              FTRenderPieceType::Type type) {
     addRoundedRect(pos, Vector2{diameter, diameter}, rotation, type, layers[1], layers[2]);
 }
 
@@ -441,7 +439,8 @@ void FTRender::addJoint(Vector2 pos, float rotation, FTObjType::Type type) {
 
 void FTRender::addRectJoints(Vector2 pos, Vector2 size, float rotation) {
     addJoint(pos, 0, FTObjType::JOINT_WHEEL_CENTER);
-    addJoint(Vector2(size.x * 0.5, size.y * 0.5).rotated(rotation) + pos, 0, FTObjType::JOINT_NORMAL);
+    addJoint(Vector2(size.x * 0.5, size.y * 0.5).rotated(rotation) + pos, 0,
+             FTObjType::JOINT_NORMAL);
     addJoint(Vector2(-size.x * 0.5, size.y * 0.5).rotated(rotation) + pos, 0,
              FTObjType::JOINT_NORMAL);
     addJoint(Vector2(size.x * 0.5, -size.y * 0.5).rotated(rotation) + pos, 0,
@@ -450,7 +449,8 @@ void FTRender::addRectJoints(Vector2 pos, Vector2 size, float rotation) {
              FTObjType::JOINT_NORMAL);
 }
 
-void FTRender::addJointedRect(Vector2 pos, Vector2 size, float rotation, FTPieceType::Type type) {
+void FTRender::addJointedRect(Vector2 pos, Vector2 size, float rotation,
+                              FTRenderPieceType::Type type) {
     addRoundedRectPiece(pos, size, rotation, type);
     addRectJoints(pos, size, rotation);
 }
@@ -460,12 +460,14 @@ void FTRender::addRodJoints(Vector2 pos, Vector2 size, float rotation) {
     addJoint(Vector2(-size.x * 0.5, 0).rotated(rotation) + pos, 0, FTObjType::JOINT_NORMAL);
 }
 
-void FTRender::addJointedRod(Vector2 pos, Vector2 size, float rotation, FTPieceType::Type type) {
+void FTRender::addJointedRod(Vector2 pos, Vector2 size, float rotation,
+                             FTRenderPieceType::Type type) {
     addRoundedRectPiece(pos, size, rotation, type);
     addRodJoints(pos, size, rotation);
 }
 
-void FTRender::addCircleJoints(Vector2 pos, float diameter, float rotation, FTPieceType::Type type) {
+void FTRender::addCircleJoints(Vector2 pos, float diameter, float rotation,
+                               FTRenderPieceType::Type type) {
     addJoint(pos, 0, FTObjType::JOINT_WHEEL_CENTER);
     float radius = diameter * 0.5;
     addJoint(Vector2(radius, 0).rotated(rotation) + pos, 0, FTObjType::JOINT_NORMAL);
@@ -484,12 +486,14 @@ void FTRender::addCircleJoints(Vector2 pos, float diameter, float rotation, FTPi
     }
 }
 
-void FTRender::addJointedCircle(Vector2 pos, float diameter, float rotation, FTPieceType::Type type) {
+void FTRender::addJointedCircle(Vector2 pos, float diameter, float rotation,
+                                FTRenderPieceType::Type type) {
     addCirclePiece(pos, diameter, rotation, type);
     addCircleJoints(pos, diameter, rotation, type);
 }
 
-void FTRender::addDecalCircle(Vector2 pos, float diameter, float rotation, FTPieceType::Type type) {
+void FTRender::addDecalCircle(Vector2 pos, float diameter, float rotation,
+                              FTRenderPieceType::Type type) {
     addCirclePiece(pos, diameter, rotation, type);
     FTObjType::Type borderType = FTRender::getPieceBorder(type);
     FTObjType::Type decalType = FTRender::getPieceDecal(type);
@@ -501,98 +505,98 @@ void FTRender::addDecalCircle(Vector2 pos, float diameter, float rotation, FTPie
 }
 
 void FTRender::addStaticRect(Vector2 pos, Vector2 size, float rotation) {
-    addRoundedRectPiece(pos, size, rotation, FTPieceType::STATIC_RECT);
+    addRoundedRectPiece(pos, size, rotation, FTRenderPieceType::STATIC_RECT);
 }
 
 void FTRender::addStaticCirc(Vector2 pos, float diameter, float rotation) {
-    addCirclePiece(pos, diameter, rotation, FTPieceType::STATIC_CIRC);
+    addCirclePiece(pos, diameter, rotation, FTRenderPieceType::STATIC_CIRC);
 }
 
 void FTRender::addDynamicRect(Vector2 pos, Vector2 size, float rotation) {
-    addRoundedRectPiece(pos, size, rotation, FTPieceType::DYNAMIC_RECT);
+    addRoundedRectPiece(pos, size, rotation, FTRenderPieceType::DYNAMIC_RECT);
 }
 
 void FTRender::addDynamicCirc(Vector2 pos, float diameter, float rotation) {
-    addCirclePiece(pos, diameter, rotation, FTPieceType::DYNAMIC_CIRC);
+    addCirclePiece(pos, diameter, rotation, FTRenderPieceType::DYNAMIC_CIRC);
 }
 
 void FTRender::addGPRect(Vector2 pos, Vector2 size, float rotation) {
-    addJointedRect(pos, size, rotation, FTPieceType::GP_RECT);
+    addJointedRect(pos, size, rotation, FTRenderPieceType::GP_RECT);
 }
 
 void FTRender::addGPCirc(Vector2 pos, float diameter, float rotation) {
-    addJointedCircle(pos, diameter, rotation, FTPieceType::GP_CIRC);
+    addJointedCircle(pos, diameter, rotation, FTRenderPieceType::GP_CIRC);
 }
 
 void FTRender::addWood(Vector2 pos, Vector2 size, float rotation) {
-    addRoundedRectPiece(pos, size + woodSizePadding, rotation, FTPieceType::WOOD);
+    addRoundedRectPiece(pos, size + woodSizePadding, rotation, FTRenderPieceType::WOOD);
     addRodJoints(pos, size, rotation);
 }
 
 void FTRender::addWater(Vector2 pos, Vector2 size, float rotation) {
-    addRoundedRectPiece(pos, size + waterSizePadding, rotation, FTPieceType::WATER);
+    addRoundedRectPiece(pos, size + waterSizePadding, rotation, FTRenderPieceType::WATER);
     addRodJoints(pos, size, rotation);
 }
 
 void FTRender::addCW(Vector2 pos, float diameter, float rotation) {
-    addDecalCircle(pos, diameter, rotation, FTPieceType::CW);
+    addDecalCircle(pos, diameter, rotation, FTRenderPieceType::CW);
 }
 
 void FTRender::addCCW(Vector2 pos, float diameter, float rotation) {
-    addDecalCircle(pos, diameter, rotation, FTPieceType::CCW);
+    addDecalCircle(pos, diameter, rotation, FTRenderPieceType::CCW);
 }
 
 void FTRender::addUPW(Vector2 pos, float diameter, float rotation) {
-    addDecalCircle(pos, diameter, rotation, FTPieceType::UPW);
+    addDecalCircle(pos, diameter, rotation, FTRenderPieceType::UPW);
 }
 
 void FTRender::addBuildArea(Vector2 pos, Vector2 size, float rotation) {
-    addArea(pos, size, rotation, FTPieceType::BUILD);
+    addArea(pos, size, rotation, FTRenderPieceType::BUILD);
 }
 
 void FTRender::addGoalArea(Vector2 pos, Vector2 size, float rotation) {
-    addArea(pos, size, rotation, FTPieceType::GOAL);
+    addArea(pos, size, rotation, FTRenderPieceType::GOAL);
 }
 
-void FTRender::addPiece(FTPieceType::Type type, Vector2 pos, Vector2 size, float rotation) {
+void FTRender::addPiece(FTRenderPieceType::Type type, Vector2 pos, Vector2 size, float rotation) {
     switch (type) {
-    case FTPieceType::STATIC_RECT:
+    case FTRenderPieceType::STATIC_RECT:
         addStaticRect(pos, size, rotation);
         break;
-    case FTPieceType::STATIC_CIRC:
+    case FTRenderPieceType::STATIC_CIRC:
         addStaticCirc(pos, size.x, rotation);
         break;
-    case FTPieceType::DYNAMIC_RECT:
+    case FTRenderPieceType::DYNAMIC_RECT:
         addDynamicRect(pos, size, rotation);
         break;
-    case FTPieceType::DYNAMIC_CIRC:
+    case FTRenderPieceType::DYNAMIC_CIRC:
         addDynamicCirc(pos, size.x, rotation);
         break;
-    case FTPieceType::GP_RECT:
+    case FTRenderPieceType::GP_RECT:
         addGPRect(pos, size, rotation);
         break;
-    case FTPieceType::GP_CIRC:
+    case FTRenderPieceType::GP_CIRC:
         addGPCirc(pos, size.x, rotation);
         break;
-    case FTPieceType::UPW:
+    case FTRenderPieceType::UPW:
         addUPW(pos, size.x, rotation);
         break;
-    case FTPieceType::CW:
+    case FTRenderPieceType::CW:
         addCW(pos, size.x, rotation);
         break;
-    case FTPieceType::CCW:
+    case FTRenderPieceType::CCW:
         addCCW(pos, size.x, rotation);
         break;
-    case FTPieceType::WATER:
+    case FTRenderPieceType::WATER:
         addWater(pos, size, rotation);
         break;
-    case FTPieceType::WOOD:
+    case FTRenderPieceType::WOOD:
         addWood(pos, size, rotation);
         break;
-    case FTPieceType::BUILD:
+    case FTRenderPieceType::BUILD:
         addBuildArea(pos, size, rotation);
         break;
-    case FTPieceType::GOAL:
+    case FTRenderPieceType::GOAL:
         addBuildArea(pos, size, rotation);
         break;
     default:

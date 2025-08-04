@@ -135,6 +135,19 @@ void FTBackend::_bind_methods() {
     BIND_CONSTANT(FT_NO_JOINT)
     BIND_CONSTANT(FT_NO_JOINT_STACK)
 
+    BIND_ENUM_CLASS_CONSTANT(FTSimPieceType, STATIC_RECT);
+    BIND_ENUM_CLASS_CONSTANT(FTSimPieceType, STATIC_CIRC);
+    BIND_ENUM_CLASS_CONSTANT(FTSimPieceType, DYNAMIC_RECT);
+    BIND_ENUM_CLASS_CONSTANT(FTSimPieceType, DYNAMIC_CIRC);
+    BIND_ENUM_CLASS_CONSTANT(FTSimPieceType, GP_RECT);
+    BIND_ENUM_CLASS_CONSTANT(FTSimPieceType, GP_CIRC);
+    BIND_ENUM_CLASS_CONSTANT(FTSimPieceType, CW);
+    BIND_ENUM_CLASS_CONSTANT(FTSimPieceType, CCW);
+    BIND_ENUM_CLASS_CONSTANT(FTSimPieceType, UPW);
+    BIND_ENUM_CLASS_CONSTANT(FTSimPieceType, WOOD);
+    BIND_ENUM_CLASS_CONSTANT(FTSimPieceType, WATER);
+    BIND_ENUM_CLASS_CONSTANT(FTSimPieceType, SIZE);
+
     ClassDB::bind_static_method("FTBackend", D_METHOD("math_hash"), &FTBackend::math_hash);
     ClassDB::bind_static_method("FTBackend", D_METHOD("dtostr", "value"), &FTBackend::dtostr);
     ClassDB::bind_static_method("FTBackend", D_METHOD("strtod", "value"), &FTBackend::strtod);
