@@ -142,7 +142,7 @@ static func parse_block(parser: XMLParser) -> Array:
 	if !xywh_parsed[0]:
 		push_error(); return [false, ERR_INVALID_DATA]
 	x = xywh_parsed[1].x; y = xywh_parsed[1].y; width = xywh_parsed[1].w; height = xywh_parsed[1].h
-	if type in [FTRender.PieceType_STATIC_CIRC, FTRender.PieceType_DYNAMIC_CIRC]: #TODO: ensure this is the exact correct behavior
+	if type in [FTRender.PieceType_STATIC_CIRC, FTRender.PieceType_STATIC_CIRC]: #TODO: ensure this is the exact correct behavior
 		width *= 2; height *= 2
 	
 	var goalBlock_str: String

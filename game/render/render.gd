@@ -32,7 +32,7 @@ const layerDataSize: Vector2i = Vector2(128, 128)
 @onready var mmInsides: MultiMeshInstance2D = $FTRender/mmInsides
 @export var colors: PackedColorArray = (func() -> PackedColorArray:
 	var arr: PackedColorArray
-	arr.resize(FTRender.ObjType_OBJ_TYPE_SIZE)
+	arr.resize(FTRender.ObjType_SIZE)
 	arr[FTRender.ObjType_STATIC_RECT_BORDER] = Color("#008009"); arr[FTRender.ObjType_STATIC_RECT_INSIDE] = Color("#00be01")
 	arr[FTRender.ObjType_STATIC_CIRC_BORDER] = Color("#008009"); arr[FTRender.ObjType_STATIC_CIRC_INSIDE] = Color("#00be01")
 	arr[FTRender.ObjType_DYNAMIC_RECT_BORDER] = Color("#c6560c"); arr[FTRender.ObjType_DYNAMIC_RECT_INSIDE] = Color("#f9da2f")
@@ -51,7 +51,7 @@ const layerDataSize: Vector2i = Vector2(128, 128)
 ).call()
 @export var cornerRadii: PackedFloat32Array = (func() -> PackedFloat32Array:
 	var arr: PackedFloat32Array
-	arr.resize(FTRender.ObjType_OBJ_TYPE_SIZE)
+	arr.resize(FTRender.ObjType_SIZE)
 	arr.set(FTRender.ObjType_STATIC_RECT_BORDER, 3)
 	arr.set(FTRender.ObjType_DYNAMIC_RECT_BORDER, 3)
 	arr.set(FTRender.ObjType_GP_RECT_BORDER, 3)
@@ -63,7 +63,7 @@ const layerDataSize: Vector2i = Vector2(128, 128)
 ).call()
 @export var borderThicknesses: PackedFloat32Array = (func() -> PackedFloat32Array:
 	var arr: PackedFloat32Array
-	arr.resize(FTRender.ObjType_OBJ_TYPE_SIZE)
+	arr.resize(FTRender.ObjType_SIZE)
 	arr.set(FTRender.ObjType_STATIC_RECT_BORDER, 4)
 	arr.set(FTRender.ObjType_STATIC_CIRC_BORDER, 4)
 	arr.set(FTRender.ObjType_DYNAMIC_RECT_BORDER, 4)
