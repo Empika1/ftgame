@@ -9,10 +9,16 @@ void initialize_ftmodules_module(ModuleInitializationLevel p_level) {
     }
     ClassDB::register_class<FTRender>();
 
-    ClassDB::register_class<FTBlock>();
     ClassDB::register_class<FTRect>();
-    ClassDB::register_class<FTBackend>();
+    ClassDB::register_class<FTBlockSpec>();
+    ClassDB::register_class<FTDesignSpec>();
+    ClassDB::register_class<FTBlock>();
+    ClassDB::register_class<FTJoint>();
+    ClassDB::register_class<FTJointStack>();
     ClassDB::register_class<FTDesign>();
+    ClassDB::register_class<FTSimSettings>();
+    ClassDB::register_class<FTSimState>();
+    ClassDB::register_class<FTBackend>();
 }
 
 void uninitialize_ftmodules_module(ModuleInitializationLevel p_level) {

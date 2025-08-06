@@ -88,7 +88,11 @@ const layerDataSize: Vector2i = Vector2(128, 128)
 @export var waterSizePadding: Vector2 = Vector2(-2, 6)
 @export var ghostRodPadding: float = 1
 
-var ft: FTDesign
+var spec: FTDesignSpec
+var design: FTDesign
+var settings: FTSimSettings = FTSimSettings.new()
+var state: FTSimState
+var setup: bool = false
 func _ready() -> void:
 	#init render
 	render.initLayers(layerMultimeshInstanceCount, layerDataSize)
@@ -104,50 +108,45 @@ func _ready() -> void:
 	if !parsed_xml[0]:
 		push_error("design parsing failed")
 		return
-	ft = parsed_xml[1][5]
-	
-	ft.create_design()
-	ft.start_sim()
+	spec = parsed_xml[1][5]
+
+	design = FTDesign.new()
+	design.init(spec)
+	state = FTSimState.new()
+	state.init(design, settings)
+	setup = true
 
 var frames: int = 0
-var ticks: int = 0
 var mod_ticks: int = 2
 func _process(_delta: float) -> void:
-	if ft == null:
+	if not setup:
 		return
 	
 	frames += 1
 	if frames % mod_ticks == 0:
-		ft.step_sim()
-		ticks += 1
+		state.step(settings)
 	
-	if ft.check_solved():
-		print("WIN: ", ticks, " Ticks")
+	if state.is_solved(spec):
+		print("WIN: ", state.get_tick(), " Ticks")
 	else:
-		print(ticks, " Ticks")
+		print(state.get_tick(), " Ticks")
 	
 	# get updated sim state
-	var pt: PackedFloat64Array = ft.get_slice(0)
-	#var pid: PackedFloat64Array = ft.get_slice(1)
-	var px: PackedFloat64Array = ft.get_slice(2)
-	var py: PackedFloat64Array = ft.get_slice(3)
-	var pw: PackedFloat64Array = ft.get_slice(4)
-	var ph: PackedFloat64Array = ft.get_slice(5)
-	var pr: PackedFloat64Array = ft.get_slice(6)
-	#var pj1: PackedFloat64Array = ft.get_slice(7)
-	#var pj2: PackedFloat64Array = ft.get_slice(8)
-	var npcs: int = len(pt)
+	var level_blocks: Array[FTBlock] = state.get_level_blocks()
+	var design_blocks: Array[FTBlock] = state.get_design_blocks()
+	var build_area: FTRect = spec.get_build()
+	var goal_area: FTRect = spec.get_goal()
 	
 	# prepare render
 	render.resetRender()
 	
 	# push updated sim state to render
-	var build_area: FTRect = ft.get_build()
-	var goal_area: FTRect = ft.get_goal()
 	render.addBuildArea(Vector2(build_area.x, build_area.y), Vector2(build_area.w, build_area.h), 0)
 	render.addGoalArea(Vector2(goal_area.x, goal_area.y), Vector2(goal_area.w, goal_area.h), 0)
-	for i in range(npcs):
-		render.addPiece(int(pt[i]), Vector2(px[i], py[i]), Vector2(pw[i], ph[i]), pr[i])
-
+	var blockses: Array = [level_blocks, design_blocks]
+	for blocks: Array[FTBlock] in blockses:
+		for piece: FTBlock in blocks:
+			render.addPiece(piece.type as int, Vector2(piece.x, piece.y), Vector2(piece.w, piece.h), piece.angle)
+	
 	# render it!
 	render.render(scale, shift)

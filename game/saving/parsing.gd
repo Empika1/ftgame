@@ -191,7 +191,7 @@ static func parse_block(parser: XMLParser) -> Array:
 	if !read_until(parser, [XMLParser.NODE_ELEMENT_END], [type_str], 1, 2):
 		push_error(); return [false, ERR_INVALID_DATA]
 	
-	return [true, FTBlock.init(type, id, x, y, width, height, rotation, joint1, joint2)]
+	return [true, FTBlockSpec.init(type, id, x, y, width, height, rotation, joint1, joint2)]
 
 #array contains [pass/fail, [is_start, rect]/error code]
 static func parse_area(parser: XMLParser, area_name: String) -> Array:
@@ -256,7 +256,7 @@ static func parse_design(xml_buffer: PackedByteArray) -> Array:
 		
 	if !read_until(parser, [XMLParser.NODE_ELEMENT], ["levelBlocks"], 1, 2):
 		push_error(); return [false, ERR_INVALID_DATA]
-	var blocks: Array[FTBlock]
+	var blocks: Array[FTBlockSpec]
 	while true:
 		var node_names: Array[String] = level_block_node_names.duplicate(); node_names.append("levelBlocks")
 		if !read_until(parser, [XMLParser.NODE_ELEMENT, XMLParser.NODE_ELEMENT_END], node_names, 1, 2):
@@ -324,7 +324,7 @@ static func parse_design(xml_buffer: PackedByteArray) -> Array:
 	if !read_until(parser, [XMLParser.NODE_ELEMENT_END], ["retrieveLevel"], 1, 2):
 		push_error(); return [false, ERR_INVALID_DATA]
 	
-	var design: FTDesign = FTDesign.new()
+	var design: FTDesignSpec = FTDesignSpec.new()
 	design.set_blocks(blocks)
 	design.set_build(start[1])
 	design.set_goal(end[1])
